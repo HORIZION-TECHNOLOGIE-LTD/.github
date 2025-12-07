@@ -53,7 +53,7 @@ flutter doctor
 
 ```bash
 cd ~/Projects
-git clone https://github.com/HORIZION-TECHNOLOGIE-LTD/.github.git chibank
+git clone https://github.com/hhongli1979-coder/chibank999.git chibank
 cd chibank/qrpay-user-app/qrpay-user-app-new-v5.0.0
 ```
 
@@ -322,7 +322,7 @@ flutter run --profile
 
 - 查看 Flutter doctor: `flutter doctor -v`
 - 查看详细日志: `flutter run -v`
-- 访问项目主页: [https://github.com/HORIZION-TECHNOLOGIE-LTD/.github](https://github.com/HORIZION-TECHNOLOGIE-LTD/.github)
+- 访问项目主页: [https://github.com/hhongli1979-coder/chibank999](https://github.com/hhongli1979-coder/chibank999)
 
 ---
 

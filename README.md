@@ -10,6 +10,7 @@ Enterprise-grade digital payment gateway solution built on Laravel.
 - [Docker 镜像管理 (Docker Image Management)](docs/zh-CN/Docker镜像管理.md)
 - [白皮书 (White Paper)](docs/zh-CN/白皮书.md)
 - [关于 GitHub Copilot CLI](docs/zh-CN/关于-GitHub-Copilot-CLI.md)
+- [iOS 安装指南 (iOS Installation Guide)](iOS安装指南.md) 📱 New!
 
 ### English
 - [Operation Manual](docs/en/OPERATION-MANUAL.md)
@@ -17,6 +18,7 @@ Enterprise-grade digital payment gateway solution built on Laravel.
 - [Docker Image Management](docs/en/DOCKER-IMAGE-MANAGEMENT.md)
 - [White Paper](docs/en/WHITEPAPER.md)
 - [About GitHub Copilot CLI](docs/en/ABOUT-GITHUB-COPILOT-CLI.md)
+- [iOS Installation Guide](docs/en/IOS-INSTALLATION-GUIDE.md) 📱 New!
 - [Vercel Deployment Guide](docs/VERCEL_DEPLOYMENT.md) ☁️ New!
 - [Vercel AI Integration](docs/VERCEL_AI_INTEGRATION.md) 🤖 AI-Powered!
 
@@ -131,6 +133,34 @@ vercel --prod
 - 📊 Analytics and monitoring
 
 See [Vercel Deployment Guide](docs/VERCEL_DEPLOYMENT.md) for detailed instructions.
+
+## 📱 Mobile App Installation / 移动应用安装
+
+### iOS App (iPhone/iPad) / iOS 应用（苹果设备）
+
+The ChiBank mobile app is built with Flutter and supports iOS 13.0+.
+
+**中文指南 →** [iOS 安装指南](iOS安装指南.md) 📱  
+**English Guide →** [iOS Installation Guide](docs/en/IOS-INSTALLATION-GUIDE.md) 📱
+
+**Quick Start / 快速开始:**
+```bash
+# Navigate to app directory
+cd qrpay-user-app/qrpay-user-app-new-v5.0.0
+
+# Install dependencies
+flutter pub get
+cd ios && pod install && cd ..
+
+# Run on iOS simulator
+flutter run
+```
+
+**Requirements / 要求:**
+- macOS with Xcode 15.0+
+- Flutter SDK 3.24.0
+- CocoaPods
+- iOS 13.0+ device or simulator
 
 ## 🔧 Features
 

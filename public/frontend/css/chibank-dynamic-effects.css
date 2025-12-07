@@ -1,0 +1,619 @@
+/*--------------------------------------------------------------
+# ChiBank Advanced Dynamic Effects - Particle System & Data Flow
+# Enterprise-grade AI Financial Platform Animations
+--------------------------------------------------------------*/
+
+:root {
+    --motion-primary: 300ms;
+    --motion-secondary: 200ms;
+    --motion-decorative: 500ms;
+    --motion-functional: 400ms;
+    --chibank-gold: #FFC324;
+    --chibank-blue-dark: #0F2B5B;
+    --chibank-blue-light: #1E4D8B;
+    --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+    --ease-in-out-back: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* ===== Particle Background System ===== */
+.particle-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -1;
+    background: linear-gradient(180deg, var(--chibank-blue-dark) 0%, var(--chibank-blue-light) 100%);
+}
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--chibank-gold);
+    border-radius: 50%;
+    opacity: 0;
+    animation: particleFlow 15s linear infinite;
+    box-shadow: 0 0 10px var(--chibank-gold);
+}
+
+@keyframes particleFlow {
+    0% {
+        opacity: 0;
+        transform: translateY(100vh) translateX(0) scale(0);
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-100vh) translateX(50px) scale(1);
+    }
+}
+
+/* Stagger particle animations */
+.particle:nth-child(odd) {
+    animation-delay: calc(var(--index) * 0.5s);
+}
+
+.particle:nth-child(even) {
+    animation-delay: calc(var(--index) * 0.7s);
+    animation-duration: 12s;
+}
+
+/* ===== Gradient Background Scroll ===== */
+.gradient-scroll {
+    background: linear-gradient(
+        180deg,
+        var(--chibank-blue-dark) 0%,
+        var(--chibank-blue-light) 50%,
+        var(--chibank-blue-dark) 100%
+    );
+    background-size: 100% 200%;
+    animation: gradientScroll 20s ease-in-out infinite;
+}
+
+@keyframes gradientScroll {
+    0%, 100% {
+        background-position: 0% 0%;
+    }
+    50% {
+        background-position: 0% 100%;
+    }
+}
+
+/* ===== Data Ripple Effect ===== */
+.data-ripple {
+    position: relative;
+    overflow: hidden;
+}
+
+.data-ripple::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 195, 36, 0.3);
+    transform: translate(-50%, -50%);
+    animation: rippleExpand 2s ease-out;
+}
+
+@keyframes rippleExpand {
+    0% {
+        width: 0;
+        height: 0;
+        opacity: 1;
+    }
+    100% {
+        width: 400px;
+        height: 400px;
+        opacity: 0;
+    }
+}
+
+/* ===== Rotating Value Cards ===== */
+.value-card-carousel {
+    perspective: 1000px;
+    position: relative;
+    height: 200px;
+}
+
+.value-card {
+    position: absolute;
+    width: 100%;
+    backface-visibility: hidden;
+    transition: all 0.6s var(--ease-out-expo);
+    transform-style: preserve-3d;
+}
+
+.value-card.active {
+    opacity: 1;
+    transform: rotateY(0deg) translateZ(0);
+    z-index: 2;
+}
+
+.value-card.next {
+    opacity: 0;
+    transform: rotateY(-90deg) translateZ(-100px);
+    z-index: 1;
+}
+
+.value-card.prev {
+    opacity: 0;
+    transform: rotateY(90deg) translateZ(-100px);
+    z-index: 0;
+}
+
+/* ===== SEPA Payment Flow Visualization ===== */
+.payment-flow-step {
+    position: relative;
+    opacity: 0;
+    transform: translateX(-50px);
+    transition: all var(--motion-functional) var(--ease-out-expo);
+}
+
+.payment-flow-step.active {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Step 1: IBAN Input Validation */
+.iban-input-wrapper {
+    position: relative;
+}
+
+.iban-input {
+    transition: all var(--motion-primary) ease;
+}
+
+.iban-input.validating {
+    border-color: var(--chibank-gold);
+    box-shadow: 0 0 0 3px rgba(255, 195, 36, 0.2);
+}
+
+.iban-input.valid {
+    border-color: #28a745;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2328a745'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 24px;
+    animation: checkmarkBounce 0.6s var(--ease-in-out-back);
+}
+
+@keyframes checkmarkBounce {
+    0%, 100% {
+        background-size: 24px;
+    }
+    50% {
+        background-size: 32px;
+    }
+}
+
+.bank-logo {
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all var(--motion-secondary) var(--ease-out-expo);
+}
+
+.bank-logo.loaded {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Step 2: Amount Input with Currency Animation */
+.amount-input-wrapper {
+    position: relative;
+}
+
+.currency-symbol {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: all var(--motion-primary) ease;
+    font-weight: 600;
+    color: var(--chibank-gold);
+}
+
+.amount-input:focus ~ .currency-symbol {
+    transform: translateY(-50%) scale(1.2);
+    color: var(--chibank-blue-dark);
+}
+
+.exchange-rate {
+    display: inline-block;
+    font-variant-numeric: tabular-nums;
+}
+
+.exchange-rate.updating {
+    animation: numberRoll 0.8s ease-out;
+}
+
+@keyframes numberRoll {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    50% {
+        opacity: 0.5;
+        transform: translateY(-10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Step 3: Approval Flow Animation */
+.approval-flow {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.approval-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #e0e0e0;
+    position: relative;
+    transition: all var(--motion-secondary) ease;
+}
+
+.approval-dot.active {
+    background: var(--chibank-gold);
+    box-shadow: 0 0 20px var(--chibank-gold);
+    animation: pulseDot 1.5s ease-in-out infinite;
+}
+
+.approval-dot.completed {
+    background: #28a745;
+    transform: scale(1.2);
+}
+
+@keyframes pulseDot {
+    0%, 100% {
+        box-shadow: 0 0 20px var(--chibank-gold);
+    }
+    50% {
+        box-shadow: 0 0 30px var(--chibank-gold), 0 0 40px var(--chibank-gold);
+    }
+}
+
+.approver-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    opacity: 0;
+    transform: scale(0);
+    transition: all var(--motion-functional) var(--ease-in-out-back);
+}
+
+.approver-avatar.show {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Stagger avatar appearance */
+.approver-avatar:nth-child(1).show { transition-delay: 0.1s; }
+.approver-avatar:nth-child(2).show { transition-delay: 0.2s; }
+.approver-avatar:nth-child(3).show { transition-delay: 0.3s; }
+
+.progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--chibank-gold) 0%, #FFD700 100%);
+    border-radius: inherit;
+    transition: width var(--motion-decorative) ease-out;
+    position: relative;
+    overflow: hidden;
+}
+
+.progress-bar-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.3) 50%,
+        transparent 100%
+    );
+    animation: shimmerProgress 2s linear infinite;
+}
+
+@keyframes shimmerProgress {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+/* ===== Virtual IBAN Card Matrix ===== */
+.viban-card {
+    transition: all var(--motion-primary) var(--ease-out-expo);
+    transform-origin: center;
+    position: relative;
+}
+
+.viban-card:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 8px 24px rgba(15, 43, 91, 0.15);
+    z-index: 10;
+}
+
+.viban-card:hover::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, transparent 0%, rgba(255, 195, 36, 0.1) 100%);
+    border-radius: inherit;
+    pointer-events: none;
+}
+
+.viban-balance {
+    font-variant-numeric: tabular-nums;
+    transition: all var(--motion-secondary) ease;
+}
+
+.viban-balance.updating {
+    animation: balanceUpdate 0.6s ease-out;
+}
+
+@keyframes balanceUpdate {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+        color: var(--chibank-gold);
+    }
+}
+
+/* ===== AI Risk Radar Visualization ===== */
+.risk-radar {
+    position: relative;
+    width: 300px;
+    height: 300px;
+}
+
+.radar-scan-line {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 2px;
+    height: 150px;
+    background: linear-gradient(to bottom, var(--chibank-gold), transparent);
+    transform-origin: bottom center;
+    animation: radarScan 4s linear infinite;
+}
+
+@keyframes radarScan {
+    0% {
+        transform: translate(-50%, -100%) rotate(0deg);
+    }
+    100% {
+        transform: translate(-50%, -100%) rotate(360deg);
+    }
+}
+
+.risk-alert {
+    animation: riskPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes riskPulse {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7);
+    }
+    50% {
+        box-shadow: 0 0 0 20px rgba(220, 53, 69, 0);
+    }
+}
+
+/* ===== Cash Flow Prediction Chart Animation ===== */
+.chart-line-path {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    animation: drawLine 2s ease-out forwards;
+}
+
+@keyframes drawLine {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+.prediction-area {
+    opacity: 0;
+    transform: scaleY(0);
+    transform-origin: bottom;
+    animation: expandArea 1s ease-out 2s forwards;
+}
+
+@keyframes expandArea {
+    to {
+        opacity: 0.6;
+        transform: scaleY(1);
+    }
+}
+
+.confidence-wave {
+    animation: waveMotion 3s ease-in-out infinite;
+}
+
+@keyframes waveMotion {
+    0%, 100% {
+        d: path("M0,50 Q25,40 50,50 T100,50");
+    }
+    50% {
+        d: path("M0,50 Q25,60 50,50 T100,50");
+    }
+}
+
+/* ===== Loading States with Brand Identity ===== */
+.chibank-loader {
+    width: 60px;
+    height: 60px;
+    position: relative;
+}
+
+.loader-particle {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: var(--chibank-gold);
+    border-radius: 50%;
+    animation: particleGather 1.5s ease-in-out infinite;
+}
+
+.loader-particle:nth-child(1) { animation-delay: 0s; }
+.loader-particle:nth-child(2) { animation-delay: 0.1s; }
+.loader-particle:nth-child(3) { animation-delay: 0.2s; }
+.loader-particle:nth-child(4) { animation-delay: 0.3s; }
+.loader-particle:nth-child(5) { animation-delay: 0.4s; }
+
+@keyframes particleGather {
+    0%, 100% {
+        transform: translate(0, 0) scale(0);
+        opacity: 0;
+    }
+    50% {
+        transform: translate(var(--tx), var(--ty)) scale(1);
+        opacity: 1;
+    }
+}
+
+/* ===== Success Celebration Animation ===== */
+.success-celebration {
+    position: relative;
+}
+
+.particle-burst {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: var(--chibank-gold);
+    border-radius: 50%;
+    animation: burst 0.8s ease-out forwards;
+}
+
+@keyframes burst {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--tx), var(--ty)) scale(0);
+        opacity: 0;
+    }
+}
+
+.success-checkmark {
+    animation: checkmarkScale 0.6s var(--ease-in-out-back);
+}
+
+@keyframes checkmarkScale {
+    0% {
+        transform: scale(0) rotate(-45deg);
+    }
+    50% {
+        transform: scale(1.2) rotate(-45deg);
+    }
+    100% {
+        transform: scale(1) rotate(0deg);
+    }
+}
+
+/* ===== Real-time Data Number Roll ===== */
+.number-roll {
+    display: inline-block;
+    font-variant-numeric: tabular-nums;
+}
+
+.digit {
+    display: inline-block;
+    transition: transform var(--motion-secondary) ease-out;
+}
+
+.digit.rolling {
+    animation: digitRoll 0.4s ease-out;
+}
+
+@keyframes digitRoll {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    51% {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* ===== Skeleton Loading with Wave Effect ===== */
+.skeleton-wave {
+    background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.05) 0%,
+        rgba(255, 255, 255, 0.15) 50%,
+        rgba(255, 255, 255, 0.05) 100%
+    );
+    background-size: 200% 100%;
+    animation: skeletonWave 1.5s linear infinite;
+}
+
+@keyframes skeletonWave {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* ===== Responsive Optimizations ===== */
+@media (max-width: 768px) {
+    .particle-background {
+        display: none; /* Disable particles on mobile for performance */
+    }
+    
+    .viban-card:hover {
+        transform: translateY(-2px) scale(1.01);
+    }
+    
+    .approval-flow {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

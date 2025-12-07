@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QRPay 管理后台 - Materialize</title>
+    <link href="https://cdn.jsdelivr.net/npm/materialize-css@1.0.0/dist/css/materialize.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" rel="stylesheet" />
+    <style>
+      .sidenav-fixed { width: 260px; }
+      main { margin-left: 260px; }
+      @media (max-width: 992px) { main { margin-left: 0; } }
+      .stat-card .card-content { display:flex; align-items:center; justify-content:space-between; }
+    </style>
+  </head>
+  <body class="grey lighten-4">
+    <header>
+      <nav class="blue darken-3">
+        <div class="nav-wrapper">
+          <a href="#" class="brand-logo" style="padding-left: 20px;">QRPay 管理后台</a>
+          <a href="#" data-target="sidenav" class="sidenav-trigger"><i class="mdi mdi-menu"></i></a>
+        </div>
+      </nav>
+    </header>
+
+    <ul id="sidenav" class="sidenav sidenav-fixed">
+      <li><a class="waves-effect active" data-section="dashboard" href="#"><i class="mdi mdi-view-dashboard"></i> 概览</a></li>
+      <li><a class="waves-effect" data-section="transactions" href="#"><i class="mdi mdi-swap-horizontal"></i> 交易</a></li>
+      <li><a class="waves-effect" data-section="users" href="#"><i class="mdi mdi-account-group"></i> 用户</a></li>
+      <li><a class="waves-effect" data-section="settings" href="#"><i class="mdi mdi-cog"></i> 设置</a></li>
+    </ul>
+
+    <main>
+      <div class="container">
+        <div id="section-dashboard" class="section">
+          <div class="row">
+            <div class="col s12 m6 l3">
+              <div class="card stat-card">
+                <div class="card-content">
+                  <div>
+                    <span class="grey-text">今日交易额</span>
+                    <h5>¥0.00</h5>
+                  </div>
+                  <i class="mdi mdi-currency-cny blue-text text-darken-2" style="font-size:40px;"></i>
+                </div>
+              </div>
+            </div>
+            <div class="col s12 m6 l3">
+              <div class="card stat-card">
+                <div class="card-content">
+                  <div>
+                    <span class="grey-text">订单数</span>
+                    <h5>0</h5>
+                  </div>
+                  <i class="mdi mdi-receipt green-text text-darken-2" style="font-size:40px;"></i>
+                </div>
+              </div>
+            </div>
+            <div class="col s12 m6 l3">
+              <div class="card stat-card">
+                <div class="card-content">
+                  <div>
+                    <span class="grey-text">新用户</span>
+                    <h5>0</h5>
+                  </div>
+                  <i class="mdi mdi-account-multiple blue-text" style="font-size:40px;"></i>
+                </div>
+              </div>
+            </div>
+            <div class="col s12 m6 l3">
+              <div class="card stat-card">
+                <div class="card-content">
+                  <div>
+                    <span class="grey-text">退款</span>
+                    <h5>0</h5>
+                  </div>
+                  <i class="mdi mdi-cash-refund red-text" style="font-size:40px;"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-content">
+              <span class="card-title">最近交易</span>
+              <table class="highlight responsive-table">
+                <thead>
+                  <tr>
+                    <th>订单号</th>
+                    <th>用户</th>
+                    <th>金额</th>
+                    <th>状态</th>
+                    <th>时间</th>
+                  </tr>
+                </thead>
+                <tbody id="tx-list">
+                  <tr><td colspan="5" class="center-align grey-text">暂无数据</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div id="section-transactions" class="section" style="display:none;">
+          <div class="card">
+            <div class="card-content">
+              <span class="card-title">交易列表</span>
+              <div class="row">
+                <div class="input-field col s12 m6">
+                  <i class="mdi mdi-magnify prefix"></i>
+                  <input id="tx-search" type="text" placeholder="订单号/用户/状态" />
+                </div>
+              </div>
+              <table class="striped responsive-table">
+                <thead>
+                  <tr>
+                    <th>订单号</th>
+                    <th>用户</th>
+                    <th>金额</th>
+                    <th>状态</th>
+                    <th>时间</th>
+                  </tr>
+                </thead>
+                <tbody id="tx-table"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div id="section-users" class="section" style="display:none;">
+          <div class="card">
+            <div class="card-content">
+              <span class="card-title">用户管理</span>
+              <a class="btn waves-effect waves-light blue"><i class="mdi mdi-account-plus left"></i>新建用户</a>
+              <table class="responsive-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>用户名</th>
+                    <th>邮箱</th>
+                    <th>角色</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody id="user-table"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div id="section-settings" class="section" style="display:none;">
+          <div class="card">
+            <div class="card-content">
+              <span class="card-title">系统设置</span>
+              <div class="row">
+                <div class="input-field col s12 m6">
+                  <input id="site-name" type="text" value="https://www.chibank.eu" />
+                  <label class="active" for="site-name">站点名称</label>
+                </div>
+                <div class="input-field col s12 m6">
+                  <input id="callback-url" type="url" value="https://www.chibank.eu/api/callback" />
+                  <label class="active" for="callback-url">回调地址</label>
+                </div>
+                <div class="col s12">
+                  <a id="btn-save-settings" class="btn green waves-effect">保存</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/materialize-css@1.0.0/dist/js/materialize.min.js"></script>
+    <script src="config.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const sidenav = document.querySelectorAll('.sidenav');
+        M.Sidenav.init(sidenav);
+      });
+
+      const sections = ["dashboard","transactions","users","settings"];
+      const showSection = (name) => {
+        sections.forEach(s => {
+          const el = document.getElementById(`section-${s}`);
+          if (el) el.style.display = s === name ? '' : 'none';
+          const link = document.querySelector(`a[data-section="${s}"]`);
+          if (link) link.classList.toggle('active', s === name);
+        });
+      };
+      document.querySelectorAll('a[data-section]').forEach(a => {
+        a.addEventListener('click', (e) => { e.preventDefault(); showSection(a.dataset.section); });
+      });
+
+      async function loadStats() {
+        try {
+          const res = await request('api/stats');
+          const data = await res.json();
+          const cards = document.querySelectorAll('#section-dashboard .stat-card h5');
+          if (cards.length >= 4) {
+            cards[0].textContent = `¥${Number(data.todayAmount).toFixed(2)}`;
+            cards[1].textContent = Number(data.orders).toString();
+            cards[2].textContent = Number(data.newUsers).toString();
+            cards[3].textContent = Number(data.refunds).toString();
+          }
+        } catch (e) {
+          console.warn('loadStats failed, fallback to local mock', e);
+          try {
+            const res2 = await fetch('api/stats.json');
+            const data = await res2.json();
+            const cards = document.querySelectorAll('#section-dashboard .stat-card h5');
+            if (cards.length >= 4) {
+              cards[0].textContent = `¥${Number(data.todayAmount).toFixed(2)}`;
+              cards[1].textContent = Number(data.orders).toString();
+              cards[2].textContent = Number(data.newUsers).toString();
+              cards[3].textContent = Number(data.refunds).toString();
+            }
+          } catch {}
+        }
+      }
+
+      async function loadRecentTransactions() {
+        try {
+          const res = await request('api/transactions');
+          const list = await res.json();
+          const tbody = document.getElementById('tx-list');
+          tbody.innerHTML = '';
+          list.slice(0, 5).forEach(tx => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `<td>${tx.orderId}</td><td>${tx.user}</td><td>¥${tx.amount.toFixed(2)}</td><td>${tx.status}</td><td>${tx.time}</td>`;
+            tbody.appendChild(tr);
+          });
+        } catch (e) {
+          console.warn('loadRecentTransactions failed, fallback to local mock', e);
+          try {
+            const res2 = await fetch('api/transactions.json');
+            const list = await res2.json();
+            const tbody = document.getElementById('tx-list');
+            tbody.innerHTML = '';
+            list.slice(0, 5).forEach(tx => {
+              const tr = document.createElement('tr');
+              tr.innerHTML = `<td>${tx.orderId}</td><td>${tx.user}</td><td>¥${tx.amount.toFixed(2)}</td><td>${tx.status}</td><td>${tx.time}</td>`;
+              tbody.appendChild(tr);
+            });
+          } catch {}
+        }
+      }
+
+      async function loadTransactions(query = '') {
+        try {
+          const res = await request('api/transactions');
+          let list = await res.json();
+          if (query) {
+            const q = query.toLowerCase();
+            list = list.filter(tx =>
+              (tx.orderId && tx.orderId.toLowerCase().includes(q)) ||
+              (tx.user && tx.user.toLowerCase().includes(q)) ||
+              (tx.status && tx.status.toLowerCase().includes(q))
+            );
+          }
+          const tbody = document.getElementById('tx-table');
+          tbody.innerHTML = '';
+          list.forEach(tx => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `<td>${tx.orderId}</td><td>${tx.user}</td><td>¥${tx.amount.toFixed(2)}</td><td>${tx.status}</td><td>${tx.time}</td>`;
+            tbody.appendChild(tr);
+          });
+        } catch (e) {
+          console.warn('loadTransactions failed, fallback to local mock', e);
+          try {
+            const res2 = await fetch('api/transactions.json');
+            let list = await res2.json();
+            if (query) {
+              const q = query.toLowerCase();
+              list = list.filter(tx =>
+                (tx.orderId && tx.orderId.toLowerCase().includes(q)) ||
+                (tx.user && tx.user.toLowerCase().includes(q)) ||
+                (tx.status && tx.status.toLowerCase().includes(q))
+              );
+            }
+            const tbody = document.getElementById('tx-table');
+            tbody.innerHTML = '';
+            list.forEach(tx => {
+              const tr = document.createElement('tr');
+              tr.innerHTML = `<td>${tx.orderId}</td><td>${tx.user}</td><td>¥${tx.amount.toFixed(2)}</td><td>${tx.status}</td><td>${tx.time}</td>`;
+              tbody.appendChild(tr);
+            });
+          } catch {}
+        }
+      }
+
+      async function loadUsers() {
+        try {
+          const res = await request('api/users');
+          const list = await res.json();
+          const tbody = document.getElementById('user-table');
+          tbody.innerHTML = '';
+          list.forEach(u => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `<td>${u.id}</td><td>${u.username}</td><td>${u.email}</td><td>${u.role}</td><td><a class='btn-small'>编辑</a></td>`;
+            tbody.appendChild(tr);
+          });
+        } catch (e) {
+          console.warn('loadUsers failed, fallback to local mock', e);
+          try {
+            const res2 = await fetch('api/users.json');
+            const list = await res2.json();
+            const tbody = document.getElementById('user-table');
+            tbody.innerHTML = '';
+            list.forEach(u => {
+              const tr = document.createElement('tr');
+              tr.innerHTML = `<td>${u.id}</td><td>${u.username}</td><td>${u.email}</td><td>${u.role}</td><td><a class='btn-small'>编辑</a></td>`;
+              tbody.appendChild(tr);
+            });
+          } catch {}
+        }
+      }
+
+      // initialize
+      loadStats();
+      loadRecentTransactions();
+      loadTransactions();
+      loadUsers();
+
+      const searchInput = document.getElementById('tx-search');
+      if (searchInput) {
+        searchInput.addEventListener('input', () => loadTransactions(searchInput.value));
+      }
+
+      // save settings
+      const saveBtn = document.getElementById('btn-save-settings');
+      // load settings from localStorage on init
+      try {
+        const saved = JSON.parse(localStorage.getItem('qrpay_settings') || '{}');
+        if (saved.siteName) document.getElementById('site-name').value = saved.siteName;
+        if (saved.callbackUrl) document.getElementById('callback-url').value = saved.callbackUrl;
+      } catch {}
+
+      if (saveBtn) {
+        saveBtn.addEventListener('click', async () => {
+          const siteName = document.getElementById('site-name').value.trim();
+          const callbackUrl = document.getElementById('callback-url').value.trim();
+          try {
+            const res = await request('api/settings', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ siteName, callbackUrl })
+            });
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            M.toast({ html: '保存成功', classes: 'green' });
+          } catch (err) {
+            console.warn('save settings failed', err);
+            // fallback to localStorage
+            try {
+              localStorage.setItem('qrpay_settings', JSON.stringify({ siteName, callbackUrl }));
+              M.toast({ html: '已本地保存', classes: 'orange' });
+            } catch {}
+            M.toast({ html: '保存失败', classes: 'red' });
+          }
+        });
+      }
+    </script>
+  </body>
+</html>

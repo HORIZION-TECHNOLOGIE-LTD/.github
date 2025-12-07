@@ -1,0 +1,30 @@
+
+
+#Ignore vscode AI rules
+.github\instructions\codacy.instructions.md
+
+# Laravel
+/vendor/
+/node_modules/
+/public/build/
+/public/hot
+.env
+.env.backup
+
+# Archive and temporary files
+archive/
+*.tmp
+*.temp
+
+# Document backups
+~$*
+*.bak
+
+# Executables
+*.exe
+*.dll
+*.so
+*.dylib
+
+# PHPUnit cache
+.phpunit.result.cache

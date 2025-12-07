@@ -1,0 +1,20 @@
+{
+	"folders": [
+		{
+			"name": "ChiBank Backend",
+			"path": "../../../.."
+		},
+		{
+			"name": "Installation",
+			"path": "."
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "installation",
+		"files.exclude": {
+			"**/node_modules": true,
+			"**/vendor": true,
+			"**/.git": true
+		}
+	}
+}

@@ -1,0 +1,49 @@
+{
+  "name": "qrpay-materialize-admin",
+  "version": "13.11.0",
+  "description": "Materialize v13.11.0 Material Design Admin Template for QRPay",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.11.0",
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^5.14.0",
+    "@mui/icons-material": "^5.14.0",
+    "@reduxjs/toolkit": "^1.9.0",
+    "axios": "^1.6.0",
+    "next": "^13.5.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-redux": "^8.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "eslint": "^8.50.0",
+    "eslint-config-next": "^13.5.0",
+    "typescript": "^5.2.0"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "keywords": [
+    "materialize",
+    "material-design",
+    "admin-template",
+    "dashboard",
+    "qrpay",
+    "react",
+    "nextjs",
+    "mui"
+  ],
+  "author": "QRPay Development Team",
+  "license": "SEE LICENSE IN LICENSE FILE"
+}

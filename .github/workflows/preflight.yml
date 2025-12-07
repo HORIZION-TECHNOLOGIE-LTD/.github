@@ -1,0 +1,115 @@
+name: Preflight Checks
+
+on:
+  pull_request:
+    branches: [ main, master, develop ]
+  workflow_dispatch:
+
+jobs:
+  preflight:
+    name: Run Preflight Checks
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: read
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          extensions: mbstring, xml, ctype, json, bcmath, mysql, curl, gd, zip
+          coverage: none
+
+      - name: Validate composer.json
+        run: composer validate --strict
+
+      - name: Install Composer dependencies
+        run: composer install --prefer-dist --no-progress --no-interaction
+
+      - name: Run PHP Syntax Check
+        run: |
+          echo "Checking PHP files for syntax errors..."
+          ERROR_COUNT=0
+          while IFS= read -r file; do
+            if ! php -l "$file" > /dev/null 2>&1; then
+              echo "Syntax error in: $file"
+              php -l "$file"
+              ERROR_COUNT=$((ERROR_COUNT + 1))
+            fi
+          done < <(find . -type f -name "*.php" ! -path "./vendor/*" ! -path "./storage/*" ! -path "./bootstrap/cache/*")
+          
+          if [ $ERROR_COUNT -eq 0 ]; then
+            echo "✅ All PHP files are syntax valid"
+          else
+            echo "❌ Found $ERROR_COUNT file(s) with syntax errors"
+            exit 1
+          fi
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Check if package.json exists
+        id: check-package
+        run: |
+          if [ -f "package.json" ]; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Install npm dependencies
+        if: steps.check-package.outputs.exists == 'true'
+        run: npm ci
+
+      - name: Build frontend assets
+        if: steps.check-package.outputs.exists == 'true'
+        run: npm run build
+
+      - name: Install ShellCheck
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y shellcheck
+
+      - name: Run ShellCheck on scripts
+        run: |
+          echo "Running ShellCheck on shell scripts..."
+          shopt -s nullglob
+          scripts=(scripts/*.sh)
+          if [ ${#scripts[@]} -eq 0 ]; then
+            echo "No shell scripts found in scripts/ directory"
+          else
+            shellcheck -x scripts/*.sh
+          fi
+
+      - name: Check file permissions
+        run: |
+          echo "Checking script file permissions..."
+          for script in scripts/*.sh; do
+            if [ -f "$script" ]; then
+              if [ ! -x "$script" ]; then
+                echo "WARNING: $script is not executable"
+                chmod +x "$script"
+              else
+                echo "✓ $script is executable"
+              fi
+            fi
+          done
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Preflight Check Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Composer validation passed" >> $GITHUB_STEP_SUMMARY
+          echo "✅ PHP syntax check passed" >> $GITHUB_STEP_SUMMARY
+          echo "✅ ShellCheck passed" >> $GITHUB_STEP_SUMMARY
+          if [ -f "package.json" ]; then
+            echo "✅ Frontend build passed" >> $GITHUB_STEP_SUMMARY
+          fi

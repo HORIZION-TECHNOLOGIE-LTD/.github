@@ -1,0 +1,230 @@
+name: Automated Release and Package
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (e.g., 5.0.0)'
+        required: true
+        default: '5.0.0'
+
+jobs:
+  build-and-package:
+    name: Build and Create Release Package
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_mysql, dom, filter, gd, json, bcmath
+          tools: composer:v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Get version
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+          else
+            echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Install Composer dependencies
+        run: composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
+
+      - name: Install NPM dependencies
+        run: npm ci
+
+      - name: Build frontend assets
+        run: npm run build:prod
+
+      - name: Create release package
+        run: |
+          chmod +x scripts/create-release.sh
+          scripts/create-release.sh ${{ steps.version.outputs.version }}
+
+      - name: Upload release artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-package
+          path: release/*.tar.gz*
+          retention-days: 90
+
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            release/*.tar.gz
+            release/*.checksums
+          body: |
+            ## ChiBank v${{ steps.version.outputs.version }} Release
+            
+            ### 📦 软件包说明 (Package Information)
+            
+            这是 ChiBank v${{ steps.version.outputs.version }} 的完整发行包，包含所有必要的文件和依赖。
+            
+            ### 🚀 快速部署 (Quick Deployment)
+            
+            #### Docker 部署（推荐）
+            ```bash
+            # 1. 下载并解压软件包
+            tar -xzf chibank-v${{ steps.version.outputs.version }}-*.tar.gz
+            cd chibank-v${{ steps.version.outputs.version }}-*
+            
+            # 2. 配置环境
+            cp .env.example .env
+            # 编辑 .env 文件
+            
+            # 3. 启动 Docker
+            docker-compose up -d
+            
+            # 4. 初始化数据库
+            docker-compose exec app php artisan migrate --force
+            docker-compose exec app php artisan db:seed
+            
+            # 5. 访问应用
+            # 浏览器打开: http://localhost
+            ```
+            
+            #### 传统部署
+            ```bash
+            # 1. 下载并解压软件包
+            tar -xzf chibank-v${{ steps.version.outputs.version }}-*.tar.gz
+            cd chibank-v${{ steps.version.outputs.version }}-*
+            
+            # 2. 配置环境
+            cp .env.example .env
+            php artisan key:generate
+            
+            # 3. 配置数据库
+            # 编辑 .env 文件中的数据库配置
+            
+            # 4. 运行迁移
+            php artisan migrate --force
+            php artisan db:seed
+            
+            # 5. 优化缓存
+            php artisan config:cache
+            php artisan route:cache
+            php artisan view:cache
+            
+            # 6. 启动应用
+            php artisan serve
+            ```
+            
+            ### 📚 文档 (Documentation)
+            
+            - [完整分析报告](./COMPREHENSIVE_ANALYSIS_REPORT_CN.md)
+            - [部署指南](./DEPLOYMENT.md)
+            - [操作手册](./docs/zh-CN/操作文档.md)
+            - [系统分析](./SYSTEM_ANALYSIS_REPORT.md)
+            
+            ### ✨ 主要功能 (Key Features)
+            
+            - ✅ 多角色系统 (用户、代理、商户、管理员)
+            - ✅ 12个支付网关集成
+            - ✅ Fiat24 区块链银行集成
+            - ✅ 多货币支持
+            - ✅ 虚拟卡系统
+            - ✅ 支付链接
+            - ✅ 手机充值
+            - ✅ KYC 验证
+            - ✅ 双因素认证 (2FA)
+            - ✅ RESTful API
+            - ✅ Flutter 移动应用
+            
+            ### 🔐 安全性 (Security)
+            
+            - 校验和文件已包含在发行包中
+            - 请在部署前验证文件完整性
+            
+            ### 📞 支持 (Support)
+            
+            如有问题，请访问:
+            - [GitHub Issues](https://github.com/hhongli1979-coder/chibank999/issues)
+            - [文档中心](./docs/)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  build-docker-image:
+    name: Build and Push Docker Image
+    runs-on: ubuntu-latest
+    needs: build-and-package
+    if: startsWith(github.ref, 'refs/tags/')
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+        continue-on-error: true
+
+      - name: Extract version
+        id: version
+        run: echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: |
+            chibank/qrpay:latest
+            chibank/qrpay:${{ steps.version.outputs.version }}
+          labels: |
+            org.opencontainers.image.title=ChiBank
+            org.opencontainers.image.description=Enterprise-grade digital payment gateway
+            org.opencontainers.image.version=${{ steps.version.outputs.version }}
+            org.opencontainers.image.created=${{ github.event.head_commit.timestamp }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+        continue-on-error: true
+
+  notify-success:
+    name: Notify Deployment Success
+    runs-on: ubuntu-latest
+    needs: [build-and-package, build-docker-image]
+    if: success()
+    
+    steps:
+      - name: Deployment notification
+        run: |
+          echo "✅ ChiBank 发行包创建成功！"
+          echo "📦 软件包已上传到 GitHub Releases"
+          echo "🐳 Docker 镜像已推送到 Docker Hub"
+          echo ""
+          echo "部署说明："
+          echo "1. 从 GitHub Releases 下载软件包"
+          echo "2. 或使用 Docker: docker pull chibank/qrpay:latest"
+          echo "3. 按照发行说明进行部署"

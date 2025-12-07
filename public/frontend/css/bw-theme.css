@@ -1,0 +1,373 @@
+/*--------------------------------------------------------------
+# Black and White Theme - Inspired by deblock.com
+# Clean, minimalist design with high contrast
+--------------------------------------------------------------*/
+
+:root {
+    /* Black and White Color Palette */
+    --bw-primary: #000000;
+    --bw-secondary: #333333;
+    --bw-background: #ffffff;
+    --bw-background-alt: #f8f8f8;
+    --bw-background-dark: #0a0a0a;
+    --bw-text-primary: #000000;
+    --bw-text-secondary: #666666;
+    --bw-text-light: #ffffff;
+    --bw-border: #e0e0e0;
+    --bw-border-dark: #2a2a2a;
+}
+
+/*--------------------------------------------------------------
+# Dark Gradient Banner and Hero Sections
+--------------------------------------------------------------*/
+.banner-section,
+.hero-section,
+.banner,
+.hero {
+    background: linear-gradient(135deg, var(--bw-background-dark) 0%, var(--bw-secondary) 100%) !important;
+    color: var(--bw-text-light) !important;
+}
+
+.banner-section::before,
+.hero-section::before {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.95) 0%, rgba(51, 51, 51, 0.9) 100%);
+}
+
+.banner-content h1,
+.banner-content h2,
+.banner-content h3,
+.hero-content h1,
+.hero-content h2,
+.hero-content h3 {
+    color: var(--bw-text-light) !important;
+}
+
+.banner-content p,
+.hero-content p {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+/*--------------------------------------------------------------
+# Dark Footer Section
+--------------------------------------------------------------*/
+.footer-section,
+footer {
+    background: linear-gradient(135deg, var(--bw-background-dark) 0%, var(--bw-secondary) 100%) !important;
+    color: var(--bw-text-light) !important;
+}
+
+.footer-section h1,
+.footer-section h2,
+.footer-section h3,
+.footer-section h4,
+.footer-section h5,
+.footer-section h6,
+footer h1,
+footer h2,
+footer h3,
+footer h4,
+footer h5,
+footer h6 {
+    color: var(--bw-text-light) !important;
+}
+
+.footer-section p,
+.footer-section a,
+footer p,
+footer a {
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.footer-section a:hover,
+footer a:hover {
+    color: var(--bw-text-light) !important;
+}
+
+/*--------------------------------------------------------------
+# White Cards with Subtle Borders
+--------------------------------------------------------------*/
+.card,
+.service-card,
+.feature-card,
+.pricing-card,
+.testimonial-card,
+.blog-card {
+    background: var(--bw-background) !important;
+    border: 1px solid var(--bw-border) !important;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+}
+
+.card:hover,
+.service-card:hover,
+.feature-card:hover,
+.pricing-card:hover,
+.blog-card:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12) !important;
+    border-color: var(--bw-secondary) !important;
+}
+
+.card-body,
+.card-content {
+    color: var(--bw-text-primary);
+}
+
+.card-title {
+    color: var(--bw-primary) !important;
+}
+
+/*--------------------------------------------------------------
+# Buttons and Interactive Elements
+--------------------------------------------------------------*/
+.btn-primary,
+.button-primary,
+.primary-btn {
+    background: var(--bw-primary) !important;
+    border-color: var(--bw-primary) !important;
+    color: var(--bw-text-light) !important;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover,
+.button-primary:hover,
+.primary-btn:hover {
+    background: var(--bw-secondary) !important;
+    border-color: var(--bw-secondary) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-outline-primary,
+.button-outline {
+    background: transparent !important;
+    border: 2px solid var(--bw-primary) !important;
+    color: var(--bw-primary) !important;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-primary:hover,
+.button-outline:hover {
+    background: var(--bw-primary) !important;
+    color: var(--bw-text-light) !important;
+}
+
+/*--------------------------------------------------------------
+# Navigation and Header
+--------------------------------------------------------------*/
+.header,
+.navbar {
+    background: var(--bw-background) !important;
+    border-bottom: 1px solid var(--bw-border);
+}
+
+.navbar-brand,
+.logo {
+    color: var(--bw-primary) !important;
+}
+
+.nav-link {
+    color: var(--bw-text-primary) !important;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: var(--bw-secondary) !important;
+}
+
+/*--------------------------------------------------------------
+# Sections and Backgrounds
+--------------------------------------------------------------*/
+.section-bg,
+.bg-light {
+    background: var(--bw-background-alt) !important;
+}
+
+.section-dark,
+.bg-dark {
+    background: var(--bw-background-dark) !important;
+    color: var(--bw-text-light) !important;
+}
+
+/*--------------------------------------------------------------
+# Typography
+--------------------------------------------------------------*/
+h1, h2, h3, h4, h5, h6 {
+    color: var(--bw-primary);
+    font-weight: 600;
+}
+
+p, span, li {
+    color: var(--bw-text-secondary);
+}
+
+a {
+    color: var(--bw-primary);
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: var(--bw-secondary);
+}
+
+/*--------------------------------------------------------------
+# Forms and Inputs
+--------------------------------------------------------------*/
+.form-control,
+.input-field,
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea {
+    background: var(--bw-background) !important;
+    border: 1px solid var(--bw-border) !important;
+    color: var(--bw-text-primary) !important;
+    transition: border-color 0.3s ease;
+}
+
+.form-control:focus,
+.input-field:focus,
+input:focus,
+textarea:focus {
+    border-color: var(--bw-primary) !important;
+    box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.08) !important;
+}
+
+/*--------------------------------------------------------------
+# Performance-Optimized Transitions
+# Only apply transitions to interactive elements
+--------------------------------------------------------------*/
+button,
+a,
+.btn,
+.card,
+.nav-link,
+input,
+textarea,
+select {
+    transition: all 0.3s ease;
+}
+
+/* Remove transitions from non-interactive elements for better performance */
+* {
+    transition: none;
+}
+
+button *,
+a *,
+.btn *,
+.card *,
+.nav-link * {
+    transition: inherit;
+}
+
+/*--------------------------------------------------------------
+# Utility Classes
+--------------------------------------------------------------*/
+.bg-bw-primary {
+    background-color: var(--bw-primary) !important;
+}
+
+.bg-bw-secondary {
+    background-color: var(--bw-secondary) !important;
+}
+
+.text-bw-primary {
+    color: var(--bw-primary) !important;
+}
+
+.text-bw-secondary {
+    color: var(--bw-secondary) !important;
+}
+
+.border-bw {
+    border-color: var(--bw-border) !important;
+}
+
+/*--------------------------------------------------------------
+# Service Cards Specific Styling
+--------------------------------------------------------------*/
+.service-item,
+.feature-item {
+    background: var(--bw-background) !important;
+    border: 1px solid var(--bw-border) !important;
+    border-radius: 8px;
+    padding: 30px;
+    transition: all 0.3s ease;
+}
+
+.service-item:hover,
+.feature-item:hover {
+    border-color: var(--bw-primary) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
+    transform: translateY(-5px);
+}
+
+.service-icon,
+.feature-icon {
+    color: var(--bw-primary) !important;
+}
+
+/*--------------------------------------------------------------
+# Modal and Overlay
+--------------------------------------------------------------*/
+.modal-content {
+    background: var(--bw-background) !important;
+    border: 1px solid var(--bw-border) !important;
+}
+
+.modal-header {
+    border-bottom: 1px solid var(--bw-border) !important;
+}
+
+.modal-footer {
+    border-top: 1px solid var(--bw-border) !important;
+}
+
+/*--------------------------------------------------------------
+# Tables
+--------------------------------------------------------------*/
+.table {
+    background: var(--bw-background) !important;
+}
+
+.table thead th {
+    background: var(--bw-background-alt) !important;
+    color: var(--bw-primary) !important;
+    border-bottom: 2px solid var(--bw-border) !important;
+}
+
+.table td {
+    border-bottom: 1px solid var(--bw-border) !important;
+}
+
+/*--------------------------------------------------------------
+# Badges and Labels
+--------------------------------------------------------------*/
+.badge-primary,
+.label-primary {
+    background: var(--bw-primary) !important;
+    color: var(--bw-text-light) !important;
+}
+
+.badge-secondary,
+.label-secondary {
+    background: var(--bw-secondary) !important;
+    color: var(--bw-text-light) !important;
+}
+
+/*--------------------------------------------------------------
+# Responsive Design
+--------------------------------------------------------------*/
+@media (max-width: 768px) {
+    .card,
+    .service-card,
+    .feature-card {
+        margin-bottom: 20px;
+    }
+    
+    .banner-section,
+    .hero-section {
+        padding: 60px 0;
+    }
+}

@@ -1,0 +1,814 @@
+/*--------------------------------------------------------------
+# ChiBank Premium Dynamic Effects - Next-Gen Visual Experience
+# Advanced Animations, 3D Effects, and Interactive UI
+# Version 2.0.0 - Premium Release
+--------------------------------------------------------------*/
+
+:root {
+    /* Premium Color Palette */
+    --chibank-premium-gold: linear-gradient(135deg, #FFC324 0%, #FFD700 50%, #F0B90B 100%);
+    --chibank-premium-blue: linear-gradient(135deg, #0F2B5B 0%, #1E4D8B 50%, #2563EB 100%);
+    --chibank-glow: 0 0 30px rgba(255, 195, 36, 0.5);
+    --chibank-glass: rgba(255, 255, 255, 0.1);
+    --chibank-glass-border: rgba(255, 255, 255, 0.2);
+    
+    /* Animation Timing */
+    --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ===== Premium Glassmorphism Effects ===== */
+.glass-card,
+.glass-effect {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 24px;
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.1),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    transition: all 0.4s var(--ease-premium);
+}
+
+.glass-card:hover,
+.glass-effect:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.25);
+    transform: translateY(-5px);
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.15),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.2),
+        var(--chibank-glow);
+}
+
+/* ===== 3D Parallax Card Effect ===== */
+.parallax-card {
+    transform-style: preserve-3d;
+    transform: perspective(1000px);
+    transition: transform 0.6s var(--ease-premium);
+}
+
+.parallax-card:hover {
+    transform: perspective(1000px) rotateX(10deg) rotateY(-10deg) scale(1.02);
+}
+
+.parallax-card .card-content {
+    transform: translateZ(50px);
+    transition: transform 0.6s var(--ease-premium);
+}
+
+.parallax-card:hover .card-content {
+    transform: translateZ(80px);
+}
+
+/* ===== Premium Banner Section ===== */
+.banner-section {
+    position: relative;
+    overflow: hidden;
+}
+
+.banner-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 80%, rgba(255, 195, 36, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(37, 99, 235, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(15, 43, 91, 0.8) 0%, transparent 80%);
+    animation: bannerGradientPulse 10s ease-in-out infinite;
+    z-index: 0;
+}
+
+@keyframes bannerGradientPulse {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.8;
+        transform: scale(1.1);
+    }
+}
+
+.banner-section .container {
+    position: relative;
+    z-index: 1;
+}
+
+/* ===== Floating Animation Enhancement ===== */
+.banner-thumb-area img {
+    animation: premiumFloat 6s ease-in-out infinite;
+}
+
+@keyframes premiumFloat {
+    0%, 100% {
+        transform: translateY(0) rotate(0deg);
+    }
+    25% {
+        transform: translateY(-15px) rotate(1deg);
+    }
+    50% {
+        transform: translateY(-25px) rotate(0deg);
+    }
+    75% {
+        transform: translateY(-15px) rotate(-1deg);
+    }
+}
+
+/* ===== Premium Text Animations ===== */
+.banner-title {
+    background: var(--chibank-premium-gold);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: textGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes textGlow {
+    0% {
+        filter: drop-shadow(0 0 10px rgba(255, 195, 36, 0.3));
+    }
+    100% {
+        filter: drop-shadow(0 0 30px rgba(255, 195, 36, 0.6));
+    }
+}
+
+/* ===== Animated Grid Background ===== */
+.grid-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        linear-gradient(rgba(255, 195, 36, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 195, 36, 0.05) 1px, transparent 1px);
+    background-size: 50px 50px;
+    animation: gridMove 20s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes gridMove {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 50px 50px;
+    }
+}
+
+/* ===== Premium Button Styles ===== */
+.btn-premium {
+    position: relative;
+    padding: 16px 40px;
+    background: var(--chibank-premium-gold);
+    border: none;
+    border-radius: 50px;
+    color: #0F2B5B;
+    font-weight: 700;
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    overflow: hidden;
+    transition: all 0.4s var(--ease-premium);
+    box-shadow: 0 4px 20px rgba(255, 195, 36, 0.4);
+}
+
+.btn-premium::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: left 0.6s var(--ease-premium);
+}
+
+.btn-premium:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 8px 30px rgba(255, 195, 36, 0.6);
+}
+
+.btn-premium:hover::before {
+    left: 100%;
+}
+
+.btn-premium:active {
+    transform: translateY(0) scale(0.98);
+}
+
+/* ===== Scroll-Triggered Animations ===== */
+.scroll-reveal {
+    opacity: 0;
+    transform: translateY(60px);
+    transition: all 0.8s var(--ease-premium);
+}
+
+.scroll-reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.scroll-reveal-left {
+    opacity: 0;
+    transform: translateX(-60px);
+    transition: all 0.8s var(--ease-premium);
+}
+
+.scroll-reveal-left.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.scroll-reveal-right {
+    opacity: 0;
+    transform: translateX(60px);
+    transition: all 0.8s var(--ease-premium);
+}
+
+.scroll-reveal-right.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.scroll-reveal-scale {
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.8s var(--ease-bounce);
+}
+
+.scroll-reveal-scale.visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* ===== Premium Service Cards ===== */
+.service-item {
+    position: relative;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 40px;
+    transition: all 0.5s var(--ease-premium);
+    overflow: hidden;
+}
+
+.service-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--chibank-premium-gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.5s var(--ease-premium);
+}
+
+.service-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 195, 36, 0.3);
+    transform: translateY(-10px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+}
+
+.service-item:hover::before {
+    transform: scaleX(1);
+}
+
+.service-item .service-icon {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--chibank-premium-gold);
+    border-radius: 20px;
+    margin-bottom: 25px;
+    transition: all 0.5s var(--ease-bounce);
+}
+
+.service-item:hover .service-icon {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 10px 30px rgba(255, 195, 36, 0.4);
+}
+
+.service-item .service-icon i {
+    font-size: 36px;
+    color: #0F2B5B;
+}
+
+/* ===== Animated Statistics Counter ===== */
+.stat-counter {
+    position: relative;
+    padding: 40px;
+    text-align: center;
+}
+
+.stat-counter::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 3px;
+    background: var(--chibank-premium-gold);
+    transition: all 0.5s var(--ease-premium);
+    transform: translateX(-50%);
+}
+
+.stat-counter:hover::after {
+    width: 80%;
+}
+
+.stat-number {
+    font-size: 56px;
+    font-weight: 800;
+    background: var(--chibank-premium-gold);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1;
+    margin-bottom: 10px;
+}
+
+/* ===== Premium Testimonial Slider ===== */
+.testimonial-item {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    padding: 40px;
+    transition: all 0.5s var(--ease-premium);
+    position: relative;
+    overflow: hidden;
+}
+
+.testimonial-item::before {
+    content: '"';
+    position: absolute;
+    top: 20px;
+    left: 30px;
+    font-size: 120px;
+    line-height: 1;
+    font-family: Georgia, serif;
+    background: var(--chibank-premium-gold);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    opacity: 0.2;
+}
+
+.testimonial-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-5px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+}
+
+/* ===== Interactive Hover Cursor ===== */
+.interactive-area {
+    cursor: none;
+}
+
+.custom-cursor {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #FFC324;
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transition: all 0.1s ease;
+    mix-blend-mode: difference;
+}
+
+.custom-cursor.hover {
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 195, 36, 0.2);
+}
+
+/* ===== Magnetic Button Effect ===== */
+.magnetic-btn {
+    display: inline-block;
+    transition: transform 0.3s var(--ease-smooth);
+}
+
+/* ===== Animated Underline Links ===== */
+.animated-link {
+    position: relative;
+    text-decoration: none;
+    transition: color 0.3s var(--ease-smooth);
+}
+
+.animated-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--chibank-premium-gold);
+    transition: width 0.4s var(--ease-premium);
+}
+
+.animated-link:hover::after {
+    width: 100%;
+}
+
+/* ===== Ripple Effect on Click ===== */
+.ripple-effect {
+    position: relative;
+    overflow: hidden;
+}
+
+.ripple-effect .ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 195, 36, 0.4);
+    transform: scale(0);
+    animation: rippleAnimation 0.6s linear;
+    pointer-events: none;
+}
+
+@keyframes rippleAnimation {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+/* ===== Loading Spinner Premium ===== */
+.premium-loader {
+    width: 60px;
+    height: 60px;
+    position: relative;
+}
+
+.premium-loader::before,
+.premium-loader::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 3px solid transparent;
+    border-radius: 50%;
+}
+
+.premium-loader::before {
+    border-top-color: #FFC324;
+    animation: spin 1s linear infinite;
+}
+
+.premium-loader::after {
+    border-bottom-color: #1E4D8B;
+    animation: spin 1.5s linear infinite reverse;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ===== Morphing Shape Background ===== */
+.morph-bg {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    background: linear-gradient(45deg, rgba(255, 195, 36, 0.1), rgba(37, 99, 235, 0.1));
+    animation: morphShape 15s ease-in-out infinite;
+    filter: blur(60px);
+}
+
+@keyframes morphShape {
+    0%, 100% {
+        border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    }
+    25% {
+        border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+    }
+    50% {
+        border-radius: 50% 60% 30% 60% / 30% 40% 70% 60%;
+    }
+    75% {
+        border-radius: 60% 30% 60% 50% / 40% 70% 40% 60%;
+    }
+}
+
+/* ===== Glowing Border Effect ===== */
+.glow-border {
+    position: relative;
+    background: transparent;
+}
+
+.glow-border::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: var(--chibank-premium-gold);
+    border-radius: inherit;
+    z-index: -1;
+    opacity: 0;
+    filter: blur(10px);
+    transition: opacity 0.5s var(--ease-premium);
+}
+
+.glow-border:hover::before {
+    opacity: 1;
+}
+
+/* ===== Text Typing Effect ===== */
+.typing-effect {
+    overflow: hidden;
+    border-right: 3px solid #FFC324;
+    white-space: nowrap;
+    animation: 
+        typing 3s steps(30, end),
+        blinkCursor 0.75s step-end infinite;
+}
+
+@keyframes typing {
+    from {
+        width: 0;
+    }
+    to {
+        width: 100%;
+    }
+}
+
+@keyframes blinkCursor {
+    from, to {
+        border-color: transparent;
+    }
+    50% {
+        border-color: #FFC324;
+    }
+}
+
+/* ===== Animated Number Counter ===== */
+.count-up {
+    font-variant-numeric: tabular-nums;
+}
+
+/* ===== Premium Section Divider ===== */
+.section-divider {
+    position: relative;
+    height: 100px;
+    overflow: hidden;
+}
+
+.section-divider::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -10%;
+    width: 120%;
+    height: 100%;
+    background: linear-gradient(135deg, #0F2B5B 25%, transparent 25%) -50px 0,
+                linear-gradient(225deg, #0F2B5B 25%, transparent 25%) -50px 0,
+                linear-gradient(315deg, #0F2B5B 25%, transparent 25%),
+                linear-gradient(45deg, #0F2B5B 25%, transparent 25%);
+    background-size: 100px 100px;
+    animation: wave 4s linear infinite;
+}
+
+@keyframes wave {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(100px);
+    }
+}
+
+/* ===== Interactive Feature Cards ===== */
+.feature-card {
+    position: relative;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    padding: 40px;
+    transition: all 0.5s var(--ease-premium);
+    overflow: hidden;
+}
+
+.feature-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(
+        from 0deg,
+        transparent,
+        rgba(255, 195, 36, 0.1),
+        transparent 60%
+    );
+    animation: rotateGlow 4s linear infinite;
+    opacity: 0;
+    transition: opacity 0.5s var(--ease-premium);
+}
+
+.feature-card:hover::before {
+    opacity: 1;
+}
+
+@keyframes rotateGlow {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.feature-card .feature-content {
+    position: relative;
+    z-index: 1;
+}
+
+/* ===== Staggered List Animation ===== */
+.stagger-list .stagger-item {
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.stagger-list.visible .stagger-item {
+    animation: staggerFadeIn 0.5s var(--ease-premium) forwards;
+}
+
+.stagger-list.visible .stagger-item:nth-child(1) { animation-delay: 0.1s; }
+.stagger-list.visible .stagger-item:nth-child(2) { animation-delay: 0.2s; }
+.stagger-list.visible .stagger-item:nth-child(3) { animation-delay: 0.3s; }
+.stagger-list.visible .stagger-item:nth-child(4) { animation-delay: 0.4s; }
+.stagger-list.visible .stagger-item:nth-child(5) { animation-delay: 0.5s; }
+.stagger-list.visible .stagger-item:nth-child(6) { animation-delay: 0.6s; }
+
+@keyframes staggerFadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===== Particle Trail Effect ===== */
+.particle-trail {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background: #FFC324;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    animation: particleFade 1s ease-out forwards;
+}
+
+@keyframes particleFade {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0);
+    }
+}
+
+/* ===== Image Reveal Animation ===== */
+.image-reveal {
+    position: relative;
+    overflow: hidden;
+}
+
+.image-reveal::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--chibank-premium-gold);
+    transform: translateX(-100%);
+    z-index: 1;
+}
+
+.image-reveal.visible::before {
+    animation: revealImage 1s var(--ease-premium) forwards;
+}
+
+@keyframes revealImage {
+    0% {
+        transform: translateX(-100%);
+    }
+    50% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+/* ===== Smooth Section Transitions ===== */
+section {
+    transition: opacity 0.6s var(--ease-premium), transform 0.6s var(--ease-premium);
+}
+
+/* ===== Enhanced Footer ===== */
+.footer-section {
+    position: relative;
+    background: linear-gradient(180deg, #0F2B5B 0%, #071428 100%);
+    overflow: hidden;
+}
+
+.footer-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #FFC324, transparent);
+}
+
+/* ===== Responsive Premium Adjustments ===== */
+@media (max-width: 991px) {
+    .parallax-card:hover {
+        transform: none;
+    }
+    
+    .morph-bg {
+        width: 400px;
+        height: 400px;
+    }
+    
+    .stat-number {
+        font-size: 42px;
+    }
+}
+
+@media (max-width: 767px) {
+    .glass-card,
+    .glass-effect {
+        backdrop-filter: blur(10px);
+    }
+    
+    .morph-bg {
+        display: none;
+    }
+    
+    .service-item {
+        padding: 30px;
+    }
+    
+    .stat-number {
+        font-size: 36px;
+    }
+}
+
+/* ===== Reduced Motion Support ===== */
+@media (prefers-reduced-motion: reduce) {
+    /* Target specific animation classes instead of universal selector */
+    .scroll-reveal,
+    .scroll-reveal-left,
+    .scroll-reveal-right,
+    .scroll-reveal-scale,
+    .stagger-item,
+    .feature-card,
+    .glass-card,
+    .glass-effect,
+    .parallax-card,
+    .morph-bg,
+    .grid-background,
+    .float-animation,
+    .particle-canvas,
+    .premium-loader,
+    .banner-thumb-area img,
+    .ripple,
+    .typing-effect {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    .banner-thumb-area img {
+        animation: none;
+    }
+    
+    .morph-bg {
+        animation: none;
+    }
+    
+    .grid-background {
+        animation: none;
+    }
+}

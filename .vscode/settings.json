@@ -1,0 +1,8 @@
+{
+    "i18n-ally.localesPaths": [
+        "lang",
+        "public/backend/files/language",
+        "resources/views/admin/sections/language",
+        "resources/views/admin/components/modals/language"
+    ]
+}

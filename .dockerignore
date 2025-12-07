@@ -1,0 +1,64 @@
+# Git files
+.git
+.gitignore
+.gitattributes
+
+# Documentation
+*.md
+docs/
+CHIBANK_DOCUMENTATION_README.md
+qrpay-documentations.html
+
+# IDE and editor files
+.vscode/
+.vs/
+.idea/
+*.swp
+*.swo
+*~
+
+# Dependencies
+/vendor/
+/node_modules/
+
+# Build artifacts
+/public/build/
+/public/hot
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Test files
+/tests/
+phpunit.xml
+.phpunit.result.cache
+
+# Temporary files
+/storage/*.key
+/storage/logs/*
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+*.tmp
+*.temp
+~$*
+*.bak
+
+# Archive
+archive/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Docker
+docker-compose.yml
+docker-compose.*.yml

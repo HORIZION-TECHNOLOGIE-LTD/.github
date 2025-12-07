@@ -1,0 +1,112 @@
+name: Copilot SWE Agent Workflow
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - 'feature/**'
+
+env:
+  BASE_BRANCH: main
+
+jobs:
+  copilot-agent:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Set base branch and fetch it
+        shell: bash
+        run: |
+          BASE_BRANCH="${{ env.BASE_BRANCH || 'main' }}"
+          echo "Using base branch: $BASE_BRANCH"
+          git fetch origin $BASE_BRANCH:$BASE_BRANCH || git fetch origin $BASE_BRANCH
+          git show-ref --verify --quiet refs/heads/$BASE_BRANCH || git branch --track $BASE_BRANCH origin/$BASE_BRANCH || true
+          git fetch --all --prune
+
+      - name: Compute changed files vs base
+        shell: bash
+        run: |
+          git --no-pager fetch origin $BASE_BRANCH || true
+          git --no-pager diff --name-only origin/$BASE_BRANCH...HEAD > changed_files.txt || true
+          echo "Changed files (first 200 lines):"
+          sed -n '1,200p' changed_files.txt || true
+
+      - name: Build Copilot input (only changed text files, exclude big dirs)
+        shell: bash
+        run: |
+          mkdir -p copilot_input
+          MAX_TOTAL_BYTES=$((1024*1024))   # 1MB total upload limit (adjustable)
+          TOTAL_BYTES=0
+          FILE_COUNT=0
+          MAX_FILES=200
+          while IFS= read -r f; do
+            case "$f" in
+              vendor/*|node_modules/*|.git/*) continue ;;
+            esac
+            [ -f "$f" ] || continue
+            size=$(stat -c%s "$f" 2>/dev/null || echo 0)
+            if [ "$size" -gt $((200*1024)) ]; then
+              echo "Skipping large file: $f ($size bytes)"
+              continue
+            fi
+            if [ $FILE_COUNT -ge $MAX_FILES ]; then
+              echo "Reached max file count ($MAX_FILES)."
+              break
+            fi
+            if [ $((TOTAL_BYTES + size)) -gt $MAX_TOTAL_BYTES ]; then
+              echo "Reached max total size (${MAX_TOTAL_BYTES})."
+              break
+            fi
+            if grep -Iq . "$f" 2>/dev/null; then
+              mkdir -p "copilot_input/$(dirname "$f")"
+              cp --parents "$f" "copilot_input/$f"
+              TOTAL_BYTES=$((TOTAL_BYTES + size))
+              FILE_COUNT=$((FILE_COUNT + 1))
+            else
+              echo "Skipping binary-ish file: $f"
+            fi
+          done < changed_files.txt
+          echo "Prepared $FILE_COUNT files, total bytes $TOTAL_BYTES"
+          if [ $FILE_COUNT -gt 0 ]; then
+            tar -czf copilot_input.tar.gz -C copilot_input . || true
+            ls -lh copilot_input.tar.gz || true
+          else
+            echo "No suitable changed files to send to Copilot"
+          fi
+
+      - name: Call Copilot agent (use copilot_input.tar.gz)
+        shell: bash
+        run: |
+          if [ -f copilot_input.tar.gz ]; then
+            echo "Invoke Copilot agent with copilot_input.tar.gz - replace with real agent invocation"
+            # TODO: Replace with the repository's actual Copilot agent invocation and pass copilot_input.tar.gz as input
+            # example: ./scripts/run_copilot_agent --input copilot_input.tar.gz
+          else
+            echo "No copilot input - skipping copilot step"
+          fi
+
+      - name: Restore vendor changes (optional)
+        if: always()
+        shell: bash
+        run: |
+          if git status --porcelain | grep -q '^ M vendor/'; then
+            echo "Resetting vendor changes"
+            git checkout -- vendor/nesbot/carbon || true
+          fi
+
+      - name: Commit and push only if changes exist
+        shell: bash
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add -A
+            git commit -m "ci: automated updates (from copilot agent)" || echo "commit failed"
+            git push origin HEAD || echo "push failed"
+          else
+            echo "No changes to commit - skipping"
+          fi

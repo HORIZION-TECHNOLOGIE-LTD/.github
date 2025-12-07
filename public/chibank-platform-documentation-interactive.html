@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chibank企业级金融平台 v5.0.0 - 功能介绍 (交互式)</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'base',
+            themeVariables: {
+                primaryColor: '#1e3a5f',
+                primaryTextColor: '#fff',
+                primaryBorderColor: '#ffd700',
+                lineColor: '#2d5a8c',
+                secondaryColor: '#ffd700',
+                tertiaryColor: '#f5f7fa'
+            }
+        });
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', 'SimHei', 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+        }
+
+        .page {
+            padding: 40px;
+            min-height: 100vh;
+        }
+
+        /* Cover Page Styles */
+        .cover-page {
+            background: linear-gradient(135deg, #0a1929 0%, #1e3a5f 50%, #2d5a8c 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cover-page::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: particleFloat 20s linear infinite;
+        }
+
+        @keyframes particleFloat {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .cover-logo {
+            font-size: 72px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            z-index: 1;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+        }
+
+        .cover-title {
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #ffd700;
+            z-index: 1;
+        }
+
+        .cover-subtitle {
+            font-size: 32px;
+            margin-bottom: 40px;
+            color: #e0e0e0;
+            z-index: 1;
+        }
+
+        .cover-info {
+            font-size: 24px;
+            color: #b0b0b0;
+            z-index: 1;
+        }
+
+        .cover-version {
+            position: absolute;
+            top: 40px;
+            right: 40px;
+            font-size: 18px;
+            color: #ffd700;
+            z-index: 1;
+            border: 2px solid #ffd700;
+            padding: 10px 20px;
+            border-radius: 25px;
+        }
+
+        /* Content Page Styles */
+        .content-page {
+            background: #ffffff;
+        }
+
+        h1 {
+            color: #0a1929;
+            font-size: 36px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 4px solid #ffd700;
+        }
+
+        h2 {
+            color: #1e3a5f;
+            font-size: 28px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            color: #2d5a8c;
+            font-size: 22px;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+            font-size: 16px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 5px solid #ffd700;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-card h3 {
+            color: #0a1929;
+            margin-top: 0;
+        }
+
+        .feature-card ul {
+            margin-left: 20px;
+            margin-top: 15px;
+        }
+
+        .feature-card li {
+            margin-bottom: 10px;
+            color: #444;
+        }
+
+        .diagram-container {
+            background: #f9f9f9;
+            padding: 30px;
+            border-radius: 12px;
+            margin: 30px 0;
+            border: 2px solid #ddd;
+        }
+
+        .mermaid {
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .tech-badge {
+            background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8c 100%);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: transform 0.2s ease;
+        }
+
+        .tech-badge:hover {
+            transform: scale(1.05);
+        }
+
+        .compliance-badge {
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: #0a1929;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            display: inline-block;
+            margin: 8px;
+            transition: transform 0.2s ease;
+        }
+
+        .compliance-badge:hover {
+            transform: scale(1.05);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        table th {
+            background: #0a1929;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-size: 16px;
+        }
+
+        table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
+            font-size: 15px;
+        }
+
+        table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        table tr:hover {
+            background: #f0f0f0;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #0a1929 0%, #1e3a5f 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin: 30px 0;
+        }
+
+        .highlight-box h2,
+        .highlight-box h3 {
+            color: #ffd700;
+        }
+
+        .nav-menu {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(10, 25, 41, 0.95);
+            padding: 20px;
+            border-radius: 12px;
+            z-index: 1000;
+            max-width: 250px;
+        }
+
+        .nav-menu a {
+            display: block;
+            color: #ffd700;
+            text-decoration: none;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 6px;
+            transition: background 0.3s ease;
+        }
+
+        .nav-menu a:hover {
+            background: rgba(255, 215, 0, 0.2);
+        }
+
+        @media print {
+            .nav-menu {
+                display: none;
+            }
+            .page {
+                page-break-after: always;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+            .cover-logo {
+                font-size: 48px;
+            }
+            .cover-title {
+                font-size: 32px;
+            }
+            .cover-subtitle {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Navigation Menu -->
+        <div class="nav-menu">
+            <h3 style="color: #ffd700; margin-bottom: 15px;">目录</h3>
+            <a href="#cover">封面</a>
+            <a href="#overview">平台概述</a>
+            <a href="#modules">核心模块</a>
+            <a href="#architecture">系统架构</a>
+            <a href="#tech">技术栈</a>
+            <a href="#compliance">合规框架</a>
+            <a href="#ai">AI特性</a>
+            <a href="#contact">联系我们</a>
+        </div>
+
+        <!-- Cover Page -->
+        <div id="cover" class="page cover-page">
+            <div class="cover-version">v5.0.0</div>
+            <div class="cover-logo">CHIBANK</div>
+            <div class="cover-title">Chibank企业级金融平台</div>
+            <div class="cover-subtitle">AI赋能的全球金融基础设施</div>
+            <div class="cover-info">
+                <p>地平线AI智能科技 荣誉出品</p>
+                <p style="margin-top: 20px; font-size: 28px; color: #ffd700;">chibank.eu</p>
+            </div>
+        </div>
+
+        <!-- Platform Overview -->
+        <div id="overview" class="page content-page">
+            <h1>一、平台概述</h1>
+            
+            <p>Chibank v5.0.0是由地平线AI智能科技打造的新一代企业级金融基础设施平台，致力于为全球企业提供安全、高效、智能的金融服务解决方案。</p>
+
+            <h2>1.1 平台定位</h2>
+            <p>Chibank定位为AI赋能的全球金融基础设施，整合了支付处理、资产管理、风险控制等核心金融功能，为企业提供一站式金融科技服务。</p>
+
+            <h2>1.2 核心优势</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>🚀 企业级架构</h3>
+                    <ul>
+                        <li>多租户SaaS架构设计</li>
+                        <li>高可用性与可扩展性</li>
+                        <li>微服务化部署</li>
+                        <li>云原生技术栈</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h3>🔒 安全合规</h3>
+                    <ul>
+                        <li>符合欧盟EMI标准</li>
+                        <li>SEPA支付合规</li>
+                        <li>多层级安全防护</li>
+                        <li>数据加密传输</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h3>🤖 AI智能</h3>
+                    <ul>
+                        <li>智能风控系统</li>
+                        <li>反欺诈检测</li>
+                        <li>行为分析引擎</li>
+                        <li>实时监控预警</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h3>🌍 全球化</h3>
+                    <ul>
+                        <li>多币种支持</li>
+                        <li>跨境支付网络</li>
+                        <li>本地化服务</li>
+                        <li>24/7全球支持</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Core Modules with Mermaid Diagrams -->
+        <div id="modules" class="page content-page">
+            <h1>二、核心功能模块</h1>
+
+            <h2>2.1 系统架构总览</h2>
+            <div class="diagram-container">
+                <div class="mermaid">
+                graph TD
+                    A[Chibank v5.0.0<br/>企业级金融平台] --> B[全球支付网络]
+                    A --> C[企业级SaaS平台]
+                    A --> D[全球合规框架]
+                    
+                    B --> B1(SEPA支付中心)
+                    B --> B2(加密资产网关)
+                    B --> B3(AI风控大脑)
+                    
+                    C --> C1(多级组织架构)
+                    C --> C2(多签钱包系统)
+                    C --> C3(审批工作流引擎)
+                    
+                    D --> D1(欧盟EMI)
+                    D --> D2(PCI DSS)
+                    D --> D3(GDPR)
+                    
+                    style A fill:#0a1929,stroke:#ffd700,stroke-width:4px,color:#fff
+                    style B fill:#1e3a5f,stroke:#ffd700,stroke-width:2px,color:#fff
+                    style C fill:#1e3a5f,stroke:#ffd700,stroke-width:2px,color:#fff
+                    style D fill:#1e3a5f,stroke:#ffd700,stroke-width:2px,color:#fff
+                </div>
+            </div>
+
+            <h2>2.2 支付中心 (Payment Hub)</h2>
+            <div class="diagram-container">
+                <div class="mermaid">
+                graph LR
+                    A[SEPA支付中心] --> B[即时支付<br/>Instant Transfer]
+                    A --> C[批量转账<br/>Bulk Transfer]
+                    A --> D[定期付款<br/>Recurring Payment]
+                    A --> E[国际汇款<br/>International]
+                    
+                    style A fill:#0a1929,stroke:#ffd700,stroke-width:3px,color:#fff
+                    style B fill:#2d5a8c,stroke:#ffd700,color:#fff
+                    style C fill:#2d5a8c,stroke:#ffd700,color:#fff
+                    style D fill:#2d5a8c,stroke:#ffd700,color:#fff
+                    style E fill:#2d5a8c,stroke:#ffd700,color:#fff
+                </div>
+            </div>
+
+            <h2>2.3 加密资产网关</h2>
+            <div class="feature-card">
+                <h3>数字资产管理</h3>
+                <ul>
+                    <li>多链支持：Bitcoin, Ethereum, BSC等主流区块链</li>
+                    <li>冷热钱包分离管理</li>
+                    <li>多签名授权机制</li>
+                    <li>实时市场数据接入</li>
+                    <li>自动化资产配置</li>
+                </ul>
+            </div>
+
+            <h2>2.4 AI风控大脑</h2>
+            <div class="diagram-container">
+                <div class="mermaid">
+                flowchart TD
+                    A[交易请求] --> B{AI风控大脑}
+                    B --> C{实时风险评估}
+                    C -->|低风险| D[自动批准]
+                    C -->|中风险| E[人工审核]
+                    C -->|高风险| F[自动拦截]
+                    
+                    B --> G[行为分析]
+                    B --> H[模式识别]
+                    B --> I[异常检测]
+                    
+                    style B fill:#0a1929,stroke:#ffd700,stroke-width:3px,color:#fff
+                    style C fill:#1e3a5f,stroke:#ffd700,color:#fff
+                    style D fill:#28a745,stroke:#ffd700,color:#fff
+                    style E fill:#ffc107,stroke:#ffd700,color:#000
+                    style F fill:#dc3545,stroke:#ffd700,color:#fff
+                </div>
+            </div>
+        </div>
+
+        <!-- System Architecture -->
+        <div id="architecture" class="page content-page">
+            <h1>三、系统架构</h1>
+
+            <h2>3.1 微服务架构图</h2>
+            <div class="diagram-container">
+                <div class="mermaid">
+                graph TB
+                    subgraph "展示层"
+                        A1[Web应用]
+                        A2[移动应用]
+                        A3[管理后台]
+                    end
+                    
+                    subgraph "API网关层"
+                        B1[API Gateway]
+                        B2[负载均衡]
+                    end
+                    
+                    subgraph "业务服务层"
+                        C1[支付服务]
+                        C2[用户服务]
+                        C3[钱包服务]
+                        C4[风控服务]
+                        C5[合规服务]
+                    end
+                    
+                    subgraph "数据层"
+                        D1[(MySQL)]
+                        D2[(Redis)]
+                        D3[(MongoDB)]
+                    end
+                    
+                    A1 --> B1
+                    A2 --> B1
+                    A3 --> B1
+                    B1 --> B2
+                    B2 --> C1
+                    B2 --> C2
+                    B2 --> C3
+                    B2 --> C4
+                    B2 --> C5
+                    C1 --> D1
+                    C2 --> D1
+                    C3 --> D2
+                    C4 --> D3
+                    C5 --> D1
+                    
+                    style B1 fill:#0a1929,stroke:#ffd700,stroke-width:3px,color:#fff
+                </div>
+            </div>
+
+            <h2>3.2 技术架构层次</h2>
+            <table>
+                <tr>
+                    <th>层次</th>
+                    <th>功能</th>
+                    <th>技术组件</th>
+                </tr>
+                <tr>
+                    <td><strong>展示层</strong></td>
+                    <td>用户界面、管理后台</td>
+                    <td>Vue.js, React, 响应式设计</td>
+                </tr>
+                <tr>
+                    <td><strong>业务层</strong></td>
+                    <td>业务逻辑处理</td>
+                    <td>Laravel, Microservices</td>
+                </tr>
+                <tr>
+                    <td><strong>服务层</strong></td>
+                    <td>核心服务</td>
+                    <td>API Gateway, Service Mesh</td>
+                </tr>
+                <tr>
+                    <td><strong>数据层</strong></td>
+                    <td>数据存储与管理</td>
+                    <td>MySQL, Redis, MongoDB</td>
+                </tr>
+                <tr>
+                    <td><strong>基础设施层</strong></td>
+                    <td>云服务与容器化</td>
+                    <td>Docker, Kubernetes, AWS/Azure</td>
+                </tr>
+            </table>
+
+            <h2>3.3 数据流架构</h2>
+            <div class="diagram-container">
+                <div class="mermaid">
+                sequenceDiagram
+                    participant U as 用户
+                    participant G as API网关
+                    participant P as 支付服务
+                    participant R as 风控服务
+                    participant D as 数据库
+                    
+                    U->>G: 发起支付请求
+                    G->>R: 风险评估
+                    R->>D: 查询历史数据
+                    D-->>R: 返回数据
+                    R-->>G: 风险评分
+                    alt 通过风控
+                        G->>P: 处理支付
+                        P->>D: 记录交易
+                        D-->>P: 确认
+                        P-->>G: 支付成功
+                        G-->>U: 返回结果
+                    else 风控拦截
+                        G-->>U: 交易拒绝
+                    end
+                </div>
+            </div>
+        </div>
+
+        <!-- Technology Stack -->
+        <div id="tech" class="page content-page">
+            <h1>四、技术栈</h1>
+
+            <h2>4.1 后端技术</h2>
+            <div class="tech-stack">
+                <span class="tech-badge">PHP 8.0+</span>
+                <span class="tech-badge">Laravel 9.x</span>
+                <span class="tech-badge">Laravel Passport</span>
+                <span class="tech-badge">Laravel Sanctum</span>
+                <span class="tech-badge">Guzzle HTTP</span>
+                <span class="tech-badge">Redis</span>
+                <span class="tech-badge">MySQL</span>
+                <span class="tech-badge">MongoDB</span>
+            </div>
+
+            <h2>4.2 前端技术</h2>
+            <div class="tech-stack">
+                <span class="tech-badge">Vue.js 3</span>
+                <span class="tech-badge">Bootstrap 5</span>
+                <span class="tech-badge">Vite</span>
+                <span class="tech-badge">Axios</span>
+                <span class="tech-badge">SASS</span>
+                <span class="tech-badge">WebSocket</span>
+            </div>
+
+            <h2>4.3 支付网关集成</h2>
+            <div class="tech-stack">
+                <span class="tech-badge">Stripe</span>
+                <span class="tech-badge">PayPal</span>
+                <span class="tech-badge">Flutterwave</span>
+                <span class="tech-badge">Paytm</span>
+                <span class="tech-badge">SEPA</span>
+            </div>
+
+            <h2>4.4 安全技术</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>身份认证</h3>
+                    <ul>
+                        <li>OAuth 2.0 认证</li>
+                        <li>双因素认证 (2FA)</li>
+                        <li>Google Authenticator集成</li>
+                        <li>JWT令牌管理</li>
+                        <li>生物识别支持</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h3>数据安全</h3>
+                    <ul>
+                        <li>端到端加密</li>
+                        <li>SSL/TLS传输加密</li>
+                        <li>数据库加密存储</li>
+                        <li>敏感信息脱敏</li>
+                        <li>定期安全审计</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h2>4.5 DevOps与基础设施</h2>
+            <div class="diagram-container">
+                <div class="mermaid">
+                graph LR
+                    A[代码仓库<br/>Git] --> B[CI/CD<br/>Pipeline]
+                    B --> C[自动化测试]
+                    C --> D[容器化<br/>Docker]
+                    D --> E[编排<br/>Kubernetes]
+                    E --> F[云平台<br/>AWS/Azure]
+                    
+                    style A fill:#2d5a8c,stroke:#ffd700,color:#fff
+                    style B fill:#2d5a8c,stroke:#ffd700,color:#fff
+                    style C fill:#2d5a8c,stroke:#ffd700,color:#fff
+                    style D fill:#2d5a8c,stroke:#ffd700,color:#fff
+                    style E fill:#2d5a8c,stroke:#ffd700,color:#fff
+                    style F fill:#0a1929,stroke:#ffd700,stroke-width:3px,color:#fff
+                </div>
+            </div>
+        </div>
+
+        <!-- Compliance Framework -->
+        <div id="compliance" class="page content-page">
+            <h1>五、全球合规框架</h1>
+
+            <h2>5.1 欧盟监管合规</h2>
+            <div class="highlight-box">
+                <h3>EMI (电子货币机构) 框架</h3>
+                <p>Chibank严格遵循欧盟电子货币指令(EMD)，确保所有电子货币发行和支付服务符合监管要求。</p>
+                
+                <div style="margin-top: 20px;">
+                    <span class="compliance-badge">EMI许可</span>
+                    <span class="compliance-badge">PSD2合规</span>
+                    <span class="compliance-badge">反洗钱(AML)</span>
+                    <span class="compliance-badge">KYC验证</span>
+                    <span class="compliance-badge">强客户认证</span>
+                </div>
+            </div>
+
+            <h2>5.2 合规流程图</h2>
+            <div class="diagram-container">
+                <div class="mermaid">
+                flowchart TD
+                    A[新用户注册] --> B[KYC身份验证]
+                    B --> C{验证结果}
+                    C -->|通过| D[AML风险评估]
+                    C -->|失败| E[拒绝开户]
+                    D --> F{风险等级}
+                    F -->|低风险| G[标准监控]
+                    F -->|中风险| H[加强监控]
+                    F -->|高风险| I[增强尽职调查]
+                    I --> J{EDD结果}
+                    J -->|通过| H
+                    J -->|失败| E
+                    G --> K[持续监控]
+                    H --> K
+                    K --> L{异常检测}
+                    L -->|发现异常| M[触发警报]
+                    L -->|正常| K
+                    M --> N[人工审查]
+                    N --> O{决策}
+                    O -->|合规| K
+                    O -->|违规| P[报告监管机构]
+                    
+                    style A fill:#2d5a8c,stroke:#ffd700,color:#fff
+                    style D fill:#1e3a5f,stroke:#ffd700,color:#fff
+                    style K fill:#0a1929,stroke:#ffd700,stroke-width:3px,color:#fff
+                    style P fill:#dc3545,stroke:#ffd700,color:#fff
+                </div>
+            </div>
+
+            <h2>5.3 数据保护合规</h2>
+            <table>
+                <tr>
+                    <th>合规标准</th>
+                    <th>适用范围</th>
+                    <th>主要要求</th>
+                </tr>
+                <tr>
+                    <td><strong>GDPR</strong></td>
+                    <td>欧盟及EEA地区</td>
+                    <td>数据隐私保护、用户同意管理、数据可移植性</td>
+                </tr>
+                <tr>
+                    <td><strong>PCI DSS</strong></td>
+                    <td>支付卡数据处理</td>
+                    <td>安全网络、数据保护、访问控制、监控测试</td>
+                </tr>
+                <tr>
+                    <td><strong>ISO 27001</strong></td>
+                    <td>信息安全管理</td>
+                    <td>信息安全管理体系(ISMS)认证</td>
+                </tr>
+                <tr>
+                    <td><strong>SOC 2</strong></td>
+                    <td>服务组织控制</td>
+                    <td>安全性、可用性、处理完整性、机密性</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- AI Features -->
+        <div id="ai" class="page content-page">
+            <h1>六、AI赋能特性</h1>
+
+            <h2>6.1 AI风控大脑工作流程</h2>
+            <div class="diagram-container">
+                <div class="mermaid">
+                graph TB
+                    subgraph "数据采集"
+                        A1[交易数据]
+                        A2[用户行为]
+                        A3[设备信息]
+                        A4[地理位置]
+                    end
+                    
+                    subgraph "特征工程"
+                        B1[数据清洗]
+                        B2[特征提取]
+                        B3[特征选择]
+                    end
+                    
+                    subgraph "AI模型"
+                        C1[风险评分模型]
+                        C2[欺诈检测模型]
+                        C3[异常检测模型]
+                        C4[用户画像模型]
+                    end
+                    
+                    subgraph "决策引擎"
+                        D1[规则引擎]
+                        D2[模型融合]
+                        D3[风险决策]
+                    end
+                    
+                    subgraph "执行层"
+                        E1[自动批准]
+                        E2[人工审核]
+                        E3[自动拦截]
+                    end
+                    
+                    A1 --> B1
+                    A2 --> B1
+                    A3 --> B1
+                    A4 --> B1
+                    B1 --> B2
+                    B2 --> B3
+                    B3 --> C1
+                    B3 --> C2
+                    B3 --> C3
+                    B3 --> C4
+                    C1 --> D2
+                    C2 --> D2
+                    C3 --> D2
+                    C4 --> D2
+                    D1 --> D3
+                    D2 --> D3
+                    D3 --> E1
+                    D3 --> E2
+                    D3 --> E3
+                    
+                    style D3 fill:#0a1929,stroke:#ffd700,stroke-width:3px,color:#fff
+                </div>
+            </div>
+
+            <h2>6.2 智能决策引擎</h2>
+            <div class="feature-card">
+                <h3>机器学习模型应用</h3>
+                <ul>
+                    <li><strong>信用评估模型：</strong>基于历史数据的信用评分算法</li>
+                    <li><strong>欺诈检测模型：</strong>实时交易风险评估与拦截</li>
+                    <li><strong>用户画像分析：</strong>多维度用户行为特征提取</li>
+                    <li><strong>预测性分析：</strong>交易趋势预测与异常预警</li>
+                    <li><strong>深度学习应用：</strong>复杂模式识别与自适应学习</li>
+                </ul>
+            </div>
+
+            <h2>6.3 自动化运营成效</h2>
+            <table>
+                <tr>
+                    <th>功能模块</th>
+                    <th>AI应用</th>
+                    <th>效益提升</th>
+                </tr>
+                <tr>
+                    <td>客户服务</td>
+                    <td>智能客服机器人、自动问题分类</td>
+                    <td>7×24小时服务，响应时间减少80%</td>
+                </tr>
+                <tr>
+                    <td>合规审查</td>
+                    <td>文档智能识别、自动合规检查</td>
+                    <td>审核效率提升70%，准确率98%+</td>
+                </tr>
+                <tr>
+                    <td>风险管理</td>
+                    <td>实时风险监控、自动拦截</td>
+                    <td>欺诈损失降低90%，误报率<5%</td>
+                </tr>
+                <tr>
+                    <td>数据分析</td>
+                    <td>智能报表生成、趋势预测</td>
+                    <td>决策效率提升60%，预测准确率85%+</td>
+                </tr>
+            </table>
+
+            <h2>6.4 持续学习与优化</h2>
+            <div class="diagram-container">
+                <div class="mermaid">
+                graph LR
+                    A[数据收集] --> B[模型训练]
+                    B --> C[模型评估]
+                    C --> D{性能达标?}
+                    D -->|是| E[模型部署]
+                    D -->|否| F[参数调优]
+                    F --> B
+                    E --> G[在线监控]
+                    G --> H[效果反馈]
+                    H --> I{需要更新?}
+                    I -->|是| A
+                    I -->|否| G
+                    
+                    style E fill:#0a1929,stroke:#ffd700,stroke-width:3px,color:#fff
+                    style G fill:#1e3a5f,stroke:#ffd700,color:#fff
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact -->
+        <div id="contact" class="page content-page">
+            <h1>联系我们</h1>
+
+            <div style="margin-top: 40px;">
+                <div class="feature-card">
+                    <h3>🌐 官方网站</h3>
+                    <p style="font-size: 20px; color: #1e3a5f; font-weight: bold;">https://chibank.eu</p>
+                </div>
+
+                <div class="feature-card" style="margin-top: 30px;">
+                    <h3>📧 商务合作</h3>
+                    <p>如需了解更多产品信息或商务合作，请通过官网联系我们的专业团队。</p>
+                </div>
+
+                <div class="feature-card" style="margin-top: 30px;">
+                    <h3>🏢 关于地平线AI智能科技</h3>
+                    <p>地平线AI智能科技是一家专注于金融科技创新的领先企业，致力于通过人工智能技术推动金融行业数字化转型。Chibank是我们在企业级金融服务领域的旗舰产品，代表了我们在支付处理、资产管理和风险控制方面的技术积累与创新成果。</p>
+                </div>
+            </div>
+
+            <div class="highlight-box" style="margin-top: 60px;">
+                <h2 style="text-align: center; margin-bottom: 20px;">Chibank v5.0.0</h2>
+                <p style="font-size: 24px; text-align: center; margin-bottom: 10px;">AI赋能的全球金融基础设施</p>
+                <p style="font-size: 18px; text-align: center; color: #b0b0b0;">地平线AI智能科技 荣誉出品</p>
+                <p style="font-size: 24px; text-align: center; color: #ffd700; margin-top: 30px;">chibank.eu</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Smooth scrolling for navigation
+        document.querySelectorAll('.nav-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "framework": null,
+  "buildCommand": "composer install --optimize-autoloader --no-dev && npm ci && npm run build",
+  "outputDirectory": "public",
+  "installCommand": "echo 'Dependencies installed in buildCommand'",
+  "functions": {
+    "api/**/*.php": {
+      "runtime": "vercel-php@0.7.1",
+      "maxDuration": 30
+    }
+  },
+  "routes": [
+    {
+      "src": "/api/ai/(.*)",
+      "dest": "/api/ai/index.php"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/api/index.php"
+    }
+  ],
+  "env": {
+    "APP_ENV": "production",
+    "SESSION_DRIVER": "cookie",
+    "CACHE_DRIVER": "array",
+    "QUEUE_CONNECTION": "sync"
+  }
+}
